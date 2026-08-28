@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Threadbound — A Python Story</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --ink-deep:#211f3a;
+  --ink-mid:#2f2c54;
+  --gold:#d4a24c;
+  --gold-soft:#e8c887;
+  --rose:#c97b84;
+  --teal:#4c8c86;
+  --paper:#f1e9dd;
+  --paper-dim:#cfc4b2;
+  --danger:#c25b52;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:
+    radial-gradient(ellipse at 20% -10%, #3a3568 0%, transparent 55%),
+    radial-gradient(ellipse at 90% 110%, #1a1830 0%, transparent 50%),
+    var(--ink-deep);
+  color:var(--paper);
+  font-family:'Work Sans', sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+h1,h2,h3,.display{ font-family:'Fraunces', serif; }
+.mono{ font-family:'JetBrains Mono', monospace; }
+
+.screen{
+  min-height:100vh;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  padding:48px 20px 80px;
+}
+.screen.active{ display:flex; }
+
+/* ---------- shared thread motif ---------- */
+.thread-rule{
+  width:60px;height:3px;border-radius:3px;
+  background:linear-gradient(90deg, var(--gold), var(--rose));
+  margin:18px 0;
+}
+
+/* ---------- TITLE SCREEN ---------- */
+#title .eyebrow{
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:12px;
+  color:var(--gold-soft);
+  margin-bottom:10px;
+}
+#title h1{
+  font-size:clamp(38px,7vw,64px);
+  font-weight:700;
+  margin:0;
+  text-align:center;
+  color:var(--paper);
+}
+#title .sub{
+  font-size:16px;
+  color:var(--paper-dim);
+  max-width:520px;
+  text-align:center;
+  line-height:1.6;
+  margin-top:4px;
+}
+.loom-hero{ width:min(520px,90vw); margin:28px 0; }
+.story-card{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(212,162,76,0.25);
+  border-radius:14px;
+  padding:26px 30px;
+  max-width:560px;
+  line-height:1.75;
+  font-size:15.5px;
+  color:var(--paper);
+}
+.story-card em{ color:var(--gold-soft); font-style:normal; }
+
+.btn{
+  font-family:'Work Sans',sans-serif;
+  font-weight:600;
+  font-size:15px;
+  padding:13px 28px;
+  border-radius:999px;
+  border:1px solid transparent;
+  cursor:pointer;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+.btn-primary{
+  background:linear-gradient(90deg, var(--gold), #c98d3c);
+  color:#241d0d;
+  box-shadow:0 6px 18px rgba(212,162,76,0.25);
+}
+.btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 22px rgba(212,162,76,0.35); }
+.btn-ghost{
+  background:transparent;
+  border-color:rgba(241,233,221,0.3);
+  color:var(--paper);
+}
+.btn-ghost:hover{ border-color:var(--gold-soft); color:var(--gold-soft); }
+.btn:disabled{ opacity:.4; cursor:not-allowed; }
+
+/* ---------- MAP SCREEN ---------- */
+#map .map-head{ text-align:center; max-width:600px; }
+.map-wrap{
+  position:relative;
+  width:min(760px,94vw);
+  margin-top:20px;
+}
+.map-path{ width:100%; height:auto; display:block; }
+.node{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  width:104px;
+  text-align:center;
+  cursor:pointer;
+  background:none;
+  border:none;
+  color:inherit;
+  font-family:inherit;
+}
+.node .bobbin{
+  width:56px;height:56px;
+  border-radius:50%;
+  margin:0 auto 8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  border:2px solid var(--gold-soft);
+  background:radial-gradient(circle at 35% 30%, #453f78, #241f42);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.node.done .bobbin{ background:radial-gradient(circle at 35% 30%, #5a8d80, #2c4d47); border-color:var(--teal); }
+.node.locked .bobbin{ opacity:.4; }
+.node:hover .bobbin{ transform:scale(1.08); box-shadow:0 0 0 6px rgba(212,162,76,0.12); }
+.node .lbl{ font-size:12.5px; font-weight:600; color:var(--paper); }
+.node .concept{ font-size:10.5px; color:var(--paper-dim); }
+
+/* ---------- LEVEL SCREEN ---------- */
+.level-wrap{
+  width:min(880px,94vw);
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  gap:26px;
+}
+@media (max-width:760px){ .level-wrap{ grid-template-columns:1fr; } }
+
+.panel{
+  background:rgba(255,255,255,0.035);
+  border:1px solid rgba(241,233,221,0.12);
+  border-radius:16px;
+  padding:22px 24px;
+}
+.panel h3{ margin:0 0 6px; font-size:19px; color:var(--gold-soft); }
+.story-text{ font-size:14.5px; line-height:1.75; color:var(--paper); }
+.story-text .elder{ color:var(--rose); }
+
+.code-block{
+  background:#191730;
+  border:1px solid rgba(212,162,76,0.2);
+  border-radius:10px;
+  padding:16px 18px;
+  font-size:14px;
+  line-height:1.9;
+  color:#e7e2d4;
+  white-space:pre;
+  overflow-x:auto;
+}
+.blank{
+  display:inline-block;
+  min-width:34px;
+  padding:1px 8px;
+  border-radius:5px;
+  background:rgba(212,162,76,0.16);
+  border:1px dashed var(--gold-soft);
+  color:var(--gold-soft);
+  font-weight:600;
+  text-align:center;
+}
+.code-comment{ color:#8b86a8; }
+.code-kw{ color:#8fb8e8; }
+.code-str{ color:#c9d97a; }
+
+.choices{ display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+.choice-btn{
+  font-family:'JetBrains Mono', monospace;
+  font-size:14px;
+  padding:9px 16px;
+  border-radius:8px;
+  border:1px solid rgba(241,233,221,0.25);
+  background:rgba(255,255,255,0.03);
+  color:var(--paper);
+  cursor:pointer;
+  transition:all .15s ease;
+}
+.choice-btn:hover{ border-color:var(--gold-soft); }
+.choice-btn.selected{ border-color:var(--gold); background:rgba(212,162,76,0.15); color:var(--gold-soft); }
+
+.feedback{
+  margin-top:16px;
+  font-size:13.5px;
+  line-height:1.6;
+  padding:12px 14px;
+  border-radius:10px;
+  display:none;
+}
+.feedback.show{ display:block; }
+.feedback.good{ background:rgba(76,140,134,0.15); border:1px solid rgba(76,140,134,0.4); color:#bfe4dd; }
+.feedback.bad{ background:rgba(194,91,82,0.12); border:1px solid rgba(194,91,82,0.35); color:#f0bcb6; }
+
+.loom-stage{ display:flex; flex-direction:column; align-items:center; }
+.loom-svg{ width:100%; max-width:320px; }
+.thread-count{ font-size:12.5px; color:var(--paper-dim); margin-top:10px; }
+
+.level-actions{ margin-top:18px; display:flex; gap:10px; }
+
+/* concept legend row */
+.legend{
+  width:min(880px,94vw);
+  margin-top:34px;
+  border-top:1px solid rgba(241,233,221,0.12);
+  padding-top:22px;
+}
+.legend h4{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--paper-dim); margin:0 0 14px; text-align:center; }
+.legend-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+@media (max-width:640px){ .legend-grid{ grid-template-columns:1fr; } }
+.legend-item{
+  font-size:12.5px;
+  line-height:1.5;
+  color:var(--paper-dim);
+  padding:12px 14px;
+  border:1px solid rgba(241,233,221,0.1);
+  border-radius:10px;
+}
+.legend-item b{ color:var(--paper); display:block; font-size:13px; margin-bottom:2px; }
+.legend-item .py{ color:var(--gold-soft); font-family:'JetBrains Mono',monospace; font-size:11.5px; }
+
+.topnav{
+  position:fixed; top:18px; left:18px;
+  font-size:13px; color:var(--paper-dim);
+  cursor:pointer; z-index:5;
+  display:flex; align-items:center; gap:6px;
+}
+.topnav:hover{ color:var(--gold-soft); }
+.hidden-init{ display:none; }
+</style>
+</head>
+<body>
+
+<!-- ================= TITLE ================= -->
+<section class="screen active" id="title">
+  <div class="eyebrow">A story-driven way to learn Python</div>
+  <h1>Threadbound</h1>
+  <div class="sub">In the city of Auronde, the great looms don't just weave cloth —<br>they weave logic. Every apprentice learns to code by learning to weave.</div>
+
+  <svg class="loom-hero" viewBox="0 0 520 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <line x1="10" y1="20" x2="10" y2="120" stroke="#4a4478" stroke-width="3"/>
+    <line x1="510" y1="20" x2="510" y2="120" stroke="#4a4478" stroke-width="3"/>
+    <g id="heroThreads"></g>
+  </svg>
+
+  <div class="story-card">
+    You are <em>Wren</em>, newly apprenticed to the Loomkeeper of Auronde. Your first task
+    sits on the frame in front of you: a half-finished pattern, and a stack of
+    instructions that look suspiciously like code. The Loomkeeper says the same
+    words work on both silk and machines &mdash; <em>"a pattern is just a set of
+    instructions that don't get tired of repeating themselves."</em>
+    <br><br>
+    Six lessons stand between you and your first commission. Let's start at the frame.
+  </div>
+
+  <div class="thread-rule"></div>
+  <button class="btn btn-primary" onclick="goTo('map')">Enter the Workshop</button>
+</section>
+
+<!-- ================= MAP ================= -->
+<section class="screen" id="map">
+  <div class="topnav" onclick="goTo('title')">&larr; Title</div>
+  <div class="map-head">
+    <h2 style="margin-bottom:4px;">The Workshop Floor</h2>
+    <div class="sub" style="margin:0 auto;">Six frames, six lessons. Chapter 3 is fully playable in this prototype &mdash; the rest preview what they'll teach.</div>
+  </div>
+
+  <div class="map-wrap">
+    <svg class="map-path" viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60,260 C 160,320 200,80 300,140 S 460,300 500,160 S 640,40 700,90"
+            stroke="url(#threadGrad)" stroke-width="3" fill="none" stroke-dasharray="1 10" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="threadGrad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#d4a24c"/>
+          <stop offset="1" stop-color="#c97b84"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+    <button class="node done" style="left:8%; top:81%;" onclick="openPreview(1)">
+      <div class="bobbin">🧵</div>
+      <div class="lbl">1. Naming Threads</div>
+      <div class="concept">variables</div>
+    </button>
+    <button class="node done" style="left:26%; top:44%;" onclick="openPreview(2)">
+      <div class="bobbin">🎨</div>
+      <div class="lbl">2. Choosing Dye</div>
+      <div class="concept">if / else</div>
+    </button>
+    <button class="node" style="left:40%; top:44%;" onclick="goTo('level3')">
+      <div class="bobbin">🔁</div>
+      <div class="lbl">3. Repeat the Weave</div>
+      <div class="concept">for loops</div>
+    </button>
+    <button class="node" style="left:64%; top:50%;" onclick="openPreview(4)">
+      <div class="bobbin">📦</div>
+      <div class="lbl">4. The Spool Rack</div>
+      <div class="concept">lists</div>
+    </button>
+    <button class="node" style="left:78%; top:20%;" onclick="openPreview(5)">
+      <div class="bobbin">🧩</div>
+      <div class="lbl">5. Pattern Blocks</div>
+      <div class="concept">functions</div>
+    </button>
+    <button class="node" style="left:92%; top:28%;" onclick="openPreview(6)">
+      <div class="bobbin">🪢</div>
+      <div class="lbl">6. The Tangled Knot</div>
+      <div class="concept">debugging</div>
+    </button>
+  </div>
+
+  <div class="legend">
+    <h4>What each frame teaches</h4>
+    <div class="legend-grid">
+      <div class="legend-item"><b>1 &middot; Naming Threads</b>Wren labels spools by color and weight before working with them.<br><span class="py">color = "indigo"</span></div>
+      <div class="legend-item"><b>2 &middot; Choosing Dye</b>The pattern calls for a different dye depending on the season.<br><span class="py">if season == "autumn": ...</span></div>
+      <div class="legend-item"><b>3 &middot; Repeat the Weave</b>A border pattern repeats the same pass a set number of times.<br><span class="py">for i in range(5): weave(...)</span></div>
+      <div class="legend-item"><b>4 &middot; The Spool Rack</b>Wren tracks every spool on the rack as one ordered collection.<br><span class="py">spools = ["red","gold","teal"]</span></div>
+      <div class="legend-item"><b>5 &middot; Pattern Blocks</b>A named block of steps gets reused across three different commissions.<br><span class="py">def herringbone(width): ...</span></div>
+      <div class="legend-item"><b>6 &middot; The Tangled Knot</b>The loom jammed. Wren reads the pattern line by line to find where logic broke.<br><span class="py"># find the bug</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PREVIEW MODAL (simple inline panel reused) ================= -->
+<section class="screen" id="preview">
+  <div class="topnav" onclick="goTo('map')">&larr; Map</div>
+  <div class="story-card" id="previewBody" style="margin-top:60px;"></div>
+  <div class="thread-rule"></div>
+  <div class="sub" style="max-width:480px;text-align:center;">This chapter isn't built out in the prototype yet &mdash; only Chapter 3 is fully playable so far. Happy to build the rest once we agree the format works.</div>
+  <button class="btn btn-ghost" style="margin-top:18px;" onclick="goTo('map')">Back to the Workshop</button>
+</section>
+
+<!-- ================= LEVEL 3 (PLAYABLE) ================= -->
+<section class="screen" id="level3">
+  <div class="topnav" onclick="goTo('map')">&larr; Map</div>
+  <div class="level-wrap" style="margin-top:44px;">
+
+    <div class="panel">
+      <h3>Chapter 3 &middot; Repeat the Weave</h3>
+      <div class="story-text">
+        The Loomkeeper taps the pattern card. <span class="elder">"This border calls for five
+        passes of red before the color changes. Watch &mdash; I don't retie the thread five
+        times. I tell the loom to repeat itself."</span>
+        <br><br>
+        She hands you the frame. The pattern card has one line missing: how many times
+        should the loom repeat the red pass? Fill in the blank and run it.
+      </div>
+
+      <div class="code-block" style="margin-top:16px;">
+<span class="code-comment"># weave the red border</span>
+<span class="code-kw">for</span> i <span class="code-kw">in</span> range(<span class="blank" id="blankSlot">?</span>):
+    weave(<span class="code-str">"red"</span>)</div>
+
+      <div class="choices" id="choiceRow">
+        <button class="choice-btn" data-val="3" onclick="selectChoice(this,3)">3</button>
+        <button class="choice-btn" data-val="5" onclick="selectChoice(this,5)">5</button>
+        <button class="choice-btn" data-val="7" onclick="selectChoice(this,7)">7</button>
+      </div>
+
+      <div class="level-actions">
+        <button class="btn btn-primary" id="runBtn" onclick="runWeave()" disabled>Run the pattern</button>
+        <button class="btn btn-ghost hidden-init" id="nextBtn" onclick="finishLevel3()">Continue the story &rarr;</button>
+      </div>
+
+      <div class="feedback" id="fb3"></div>
+    </div>
+
+    <div class="panel loom-stage">
+      <h3 style="align-self:flex-start;">The Frame</h3>
+      <svg class="loom-svg" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+        <rect x="14" y="10" width="6" height="180" fill="#4a4478"/>
+        <rect x="220" y="10" width="6" height="180" fill="#4a4478"/>
+        <g id="loomThreads"></g>
+      </svg>
+      <div class="thread-count" id="threadCount">0 of 5 red passes woven</div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+}
+
+// hero decorative threads on title screen
+(function(){
+  const g = document.getElementById('heroThreads');
+  const colors = ['#d4a24c','#c97b84','#4c8c86','#e8c887','#8fb8e8'];
+  for(let i=0;i<5;i++){
+    const y = 25 + i*20;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    const wob = 8 + (i%3)*4;
+    path.setAttribute('d', `M12,${y} C 140,${y-wob} 380,${y+wob} 508,${y}`);
+    path.setAttribute('stroke', colors[i%colors.length]);
+    path.setAttribute('stroke-width','2.5');
+    path.setAttribute('fill','none');
+    path.setAttribute('opacity','0.75');
+    path.setAttribute('stroke-linecap','round');
+    g.appendChild(path);
+  }
+})();
+
+const previews = {
+  1: {t:"Chapter 1 &middot; Naming Threads", d:"Before Wren touches the loom, she labels every spool: its color, its weight, whether it's silk or wool. In Python terms &mdash; this is a first, gentle introduction to variables and data types, told through the ordinary act of labeling supplies before a job."},
+  2: {t:"Chapter 2 &middot; Choosing Dye", d:"Autumn commissions want warm dyes, winter ones want cool. The pattern card has a branch in it: <span class=\"py mono\">if season == \"autumn\"</span> &mdash; and Wren has to decide which rule applies before she dyes a single thread. This chapter introduces conditionals through a decision she'd actually have to make."},
+  4: {t:"Chapter 4 &middot; The Spool Rack", d:"The rack holds a dozen spools in a specific order &mdash; and the order matters, because the pattern reads them left to right. This chapter introduces lists (and indexing) through something Wren already manages by hand: her own spool rack."},
+  5: {t:"Chapter 5 &middot; Pattern Blocks", d:"Three different commissions all need the same herringbone edge. Rather than re-explain it three times, the Loomkeeper writes it once as a named block Wren can call whenever she needs it. This is where functions enter &mdash; as a shortcut for something Wren was already repeating by hand."},
+  6: {t:"Chapter 6 &middot; The Tangled Knot", d:"The loom jams halfway through a commission. Something in the pattern is wrong, and the only way forward is to trace it line by line until the snag reveals itself. This closing chapter reframes debugging as a familiar craft skill: patient, methodical troubleshooting, not a mysterious extra step."}
+};
+function openPreview(n){
+  const p = previews[n];
+  document.getElementById('previewBody').innerHTML = `<h3 style="margin-top:0;color:var(--gold-soft);">${p.t}</h3><div style="line-height:1.75;">${p.d}</div>`;
+  goTo('preview');
+}
+
+// ---- Level 3 logic ----
+let chosen = null;
+function selectChoice(btn, val){
+  document.querySelectorAll('#choiceRow .choice-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  chosen = val;
+  document.getElementById('blankSlot').textContent = val;
+  document.getElementById('runBtn').disabled = false;
+  document.getElementById('fb3').classList.remove('show','good','bad');
+}
+
+function runWeave(){
+  const loomG = document.getElementById('loomThreads');
+  loomG.innerHTML = '';
+  const fb = document.getElementById('fb3');
+  const count = chosen;
+  const target = 5;
+
+  // animate threads
+  for(let i=0;i<count;i++){
+    const y = 20 + i*30;
+    const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1','22'); line.setAttribute('y1',y);
+    line.setAttribute('x2','22'); line.setAttribute('y2',y);
+    line.setAttribute('stroke', '#c25b52');
+    line.setAttribute('stroke-width','7');
+    line.setAttribute('stroke-linecap','round');
+    loomG.appendChild(line);
+    setTimeout(()=>{
+      line.style.transition = 'all .45s ease';
+      line.setAttribute('x2','218');
+    }, 120*i);
+  }
+  document.getElementById('threadCount').textContent = `${count} of 5 red passes woven`;
+
+  setTimeout(()=>{
+    fb.classList.add('show');
+    document.getElementById('nextBtn').classList.remove('hidden-init');
+    if(count === target){
+      fb.classList.add('good'); fb.classList.remove('bad');
+      fb.innerHTML = `<b>Exactly five.</b> The Loomkeeper nods. "range(5) &mdash; that's five passes, counting from zero to four. The loom doesn't need to be told five separate times. That's the whole point of a loop."`;
+    } else if(count < target){
+      fb.classList.add('bad'); fb.classList.remove('good');
+      fb.innerHTML = `<b>Only ${count} passes.</b> The border looks thin. "Count again," she says. "range(${count}) repeats ${count} times &mdash; not enough for this pattern." Try a different number.`;
+    } else {
+      fb.classList.add('bad'); fb.classList.remove('good');
+      fb.innerHTML = `<b>${count} passes &mdash; too many.</b> Red thread spills past the border into the next color's space. "range(${count}) overshoots the pattern," she says. Try a smaller number.`;
+    }
+  }, 120*count + 300);
+}
+
+function finishLevel3(){
+  goTo('map');
+  // mark chapter 3 as done visually
+  const node3 = document.querySelectorAll('#map .node')[2];
+  node3.classList.add('done');
+}
+</script>
+</body>
+</html>
