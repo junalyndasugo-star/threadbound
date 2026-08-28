@@ -41,176 +41,108 @@ h1,h2,h3,.display{ font-family:'Fraunces', serif; }
 }
 .screen.active{ display:flex; }
 
-/* ---------- shared thread motif ---------- */
 .thread-rule{
   width:60px;height:3px;border-radius:3px;
   background:linear-gradient(90deg, var(--gold), var(--rose));
   margin:18px 0;
 }
 
-/* ---------- TITLE SCREEN ---------- */
+/* ---------- TITLE ---------- */
 #title .eyebrow{
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  font-size:12px;
-  color:var(--gold-soft);
-  margin-bottom:10px;
+  letter-spacing:.18em; text-transform:uppercase; font-size:12px;
+  color:var(--gold-soft); margin-bottom:10px;
 }
-#title h1{
-  font-size:clamp(38px,7vw,64px);
-  font-weight:700;
-  margin:0;
-  text-align:center;
-  color:var(--paper);
-}
-#title .sub{
-  font-size:16px;
-  color:var(--paper-dim);
-  max-width:520px;
-  text-align:center;
-  line-height:1.6;
-  margin-top:4px;
-}
+#title h1{ font-size:clamp(38px,7vw,64px); font-weight:700; margin:0; text-align:center; color:var(--paper); }
+#title .sub{ font-size:16px; color:var(--paper-dim); max-width:520px; text-align:center; line-height:1.6; margin-top:4px; }
 .loom-hero{ width:min(520px,90vw); margin:28px 0; }
 .story-card{
   background:rgba(255,255,255,0.04);
   border:1px solid rgba(212,162,76,0.25);
-  border-radius:14px;
-  padding:26px 30px;
-  max-width:560px;
-  line-height:1.75;
-  font-size:15.5px;
-  color:var(--paper);
+  border-radius:14px; padding:26px 30px; max-width:560px;
+  line-height:1.75; font-size:15.5px; color:var(--paper);
 }
 .story-card em{ color:var(--gold-soft); font-style:normal; }
 
 .btn{
-  font-family:'Work Sans',sans-serif;
-  font-weight:600;
-  font-size:15px;
-  padding:13px 28px;
-  border-radius:999px;
-  border:1px solid transparent;
-  cursor:pointer;
-  transition:transform .15s ease, box-shadow .15s ease;
+  font-family:'Work Sans',sans-serif; font-weight:600; font-size:15px;
+  padding:13px 28px; border-radius:999px; border:1px solid transparent;
+  cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;
 }
 .btn:focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
-.btn-primary{
-  background:linear-gradient(90deg, var(--gold), #c98d3c);
-  color:#241d0d;
-  box-shadow:0 6px 18px rgba(212,162,76,0.25);
-}
+.btn-primary{ background:linear-gradient(90deg, var(--gold), #c98d3c); color:#241d0d; box-shadow:0 6px 18px rgba(212,162,76,0.25); }
 .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 8px 22px rgba(212,162,76,0.35); }
-.btn-ghost{
-  background:transparent;
-  border-color:rgba(241,233,221,0.3);
-  color:var(--paper);
-}
+.btn-ghost{ background:transparent; border-color:rgba(241,233,221,0.3); color:var(--paper); }
 .btn-ghost:hover{ border-color:var(--gold-soft); color:var(--gold-soft); }
 .btn:disabled{ opacity:.4; cursor:not-allowed; }
 
-/* ---------- MAP SCREEN ---------- */
+/* ---------- MAP ---------- */
 #map .map-head{ text-align:center; max-width:600px; }
-.map-wrap{
-  position:relative;
-  width:min(760px,94vw);
-  margin-top:20px;
-}
+.map-wrap{ position:relative; width:min(760px,94vw); margin-top:20px; }
 .map-path{ width:100%; height:auto; display:block; }
 .node{
-  position:absolute;
-  transform:translate(-50%,-50%);
-  width:104px;
-  text-align:center;
-  cursor:pointer;
-  background:none;
-  border:none;
-  color:inherit;
-  font-family:inherit;
+  position:absolute; transform:translate(-50%,-50%); width:104px; text-align:center;
+  cursor:pointer; background:none; border:none; color:inherit; font-family:inherit;
 }
 .node .bobbin{
-  width:56px;height:56px;
-  border-radius:50%;
-  margin:0 auto 8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:22px;
+  width:56px;height:56px; border-radius:50%; margin:0 auto 8px;
+  display:flex;align-items:center;justify-content:center; font-size:22px;
   border:2px solid var(--gold-soft);
   background:radial-gradient(circle at 35% 30%, #453f78, #241f42);
   transition:transform .18s ease, box-shadow .18s ease;
 }
 .node.done .bobbin{ background:radial-gradient(circle at 35% 30%, #5a8d80, #2c4d47); border-color:var(--teal); }
-.node.locked .bobbin{ opacity:.4; }
 .node:hover .bobbin{ transform:scale(1.08); box-shadow:0 0 0 6px rgba(212,162,76,0.12); }
 .node .lbl{ font-size:12.5px; font-weight:600; color:var(--paper); }
 .node .concept{ font-size:10.5px; color:var(--paper-dim); }
+.node .done-tick{ font-size:10.5px; color:var(--teal); font-weight:600; display:none; }
+.node.done .done-tick{ display:block; }
+.node.done .concept{ display:none; }
 
-/* ---------- LEVEL SCREEN ---------- */
-.level-wrap{
-  width:min(880px,94vw);
-  display:grid;
-  grid-template-columns:1.1fr 1fr;
-  gap:26px;
-}
+/* ---------- LEVEL SHARED ---------- */
+.level-wrap{ width:min(880px,94vw); display:grid; grid-template-columns:1.1fr 1fr; gap:26px; }
 @media (max-width:760px){ .level-wrap{ grid-template-columns:1fr; } }
 
 .panel{
   background:rgba(255,255,255,0.035);
   border:1px solid rgba(241,233,221,0.12);
-  border-radius:16px;
-  padding:22px 24px;
+  border-radius:16px; padding:22px 24px;
 }
 .panel h3{ margin:0 0 6px; font-size:19px; color:var(--gold-soft); }
 .story-text{ font-size:14.5px; line-height:1.75; color:var(--paper); }
 .story-text .elder{ color:var(--rose); }
 
 .code-block{
-  background:#191730;
-  border:1px solid rgba(212,162,76,0.2);
-  border-radius:10px;
-  padding:16px 18px;
-  font-size:14px;
-  line-height:1.9;
-  color:#e7e2d4;
-  white-space:pre;
-  overflow-x:auto;
+  background:#191730; border:1px solid rgba(212,162,76,0.2); border-radius:10px;
+  padding:16px 18px; font-size:14px; line-height:1.9; color:#e7e2d4;
+  white-space:pre; overflow-x:auto;
 }
 .blank{
-  display:inline-block;
-  min-width:34px;
-  padding:1px 8px;
-  border-radius:5px;
-  background:rgba(212,162,76,0.16);
-  border:1px dashed var(--gold-soft);
-  color:var(--gold-soft);
-  font-weight:600;
-  text-align:center;
+  display:inline-block; min-width:34px; padding:1px 8px; border-radius:5px;
+  background:rgba(212,162,76,0.16); border:1px dashed var(--gold-soft);
+  color:var(--gold-soft); font-weight:600; text-align:center;
 }
 .code-comment{ color:#8b86a8; }
 .code-kw{ color:#8fb8e8; }
 .code-str{ color:#c9d97a; }
+.code-line{ display:block; cursor:default; border-radius:4px; padding:0 4px; margin:0 -4px; }
+.code-line.pickable{ cursor:pointer; }
+.code-line.pickable:hover{ background:rgba(212,162,76,0.08); }
+.code-line.picked{ background:rgba(212,162,76,0.18); outline:1px dashed var(--gold-soft); }
+.code-line.bad-indent{ padding-left:5ch; }
 
 .choices{ display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
 .choice-btn{
-  font-family:'JetBrains Mono', monospace;
-  font-size:14px;
-  padding:9px 16px;
-  border-radius:8px;
-  border:1px solid rgba(241,233,221,0.25);
-  background:rgba(255,255,255,0.03);
-  color:var(--paper);
-  cursor:pointer;
-  transition:all .15s ease;
+  font-family:'JetBrains Mono', monospace; font-size:13.5px;
+  padding:9px 16px; border-radius:8px; border:1px solid rgba(241,233,221,0.25);
+  background:rgba(255,255,255,0.03); color:var(--paper); cursor:pointer;
+  transition:all .15s ease; text-align:left;
 }
 .choice-btn:hover{ border-color:var(--gold-soft); }
 .choice-btn.selected{ border-color:var(--gold); background:rgba(212,162,76,0.15); color:var(--gold-soft); }
 
 .feedback{
-  margin-top:16px;
-  font-size:13.5px;
-  line-height:1.6;
-  padding:12px 14px;
-  border-radius:10px;
-  display:none;
+  margin-top:16px; font-size:13.5px; line-height:1.6; padding:12px 14px;
+  border-radius:10px; display:none;
 }
 .feedback.show{ display:block; }
 .feedback.good{ background:rgba(76,140,134,0.15); border:1px solid rgba(76,140,134,0.4); color:#bfe4dd; }
@@ -218,43 +150,36 @@ h1,h2,h3,.display{ font-family:'Fraunces', serif; }
 
 .loom-stage{ display:flex; flex-direction:column; align-items:center; }
 .loom-svg{ width:100%; max-width:320px; }
-.thread-count{ font-size:12.5px; color:var(--paper-dim); margin-top:10px; }
+.thread-count{ font-size:12.5px; color:var(--paper-dim); margin-top:10px; text-align:center; }
 
 .level-actions{ margin-top:18px; display:flex; gap:10px; }
 
-/* concept legend row */
-.legend{
-  width:min(880px,94vw);
-  margin-top:34px;
-  border-top:1px solid rgba(241,233,221,0.12);
-  padding-top:22px;
-}
+.legend{ width:min(880px,94vw); margin-top:34px; border-top:1px solid rgba(241,233,221,0.12); padding-top:22px; }
 .legend h4{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--paper-dim); margin:0 0 14px; text-align:center; }
-.legend-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
+.legend-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
 @media (max-width:640px){ .legend-grid{ grid-template-columns:1fr; } }
-.legend-item{
-  font-size:12.5px;
-  line-height:1.5;
-  color:var(--paper-dim);
-  padding:12px 14px;
-  border:1px solid rgba(241,233,221,0.1);
-  border-radius:10px;
-}
+.legend-item{ font-size:12.5px; line-height:1.5; color:var(--paper-dim); padding:12px 14px; border:1px solid rgba(241,233,221,0.1); border-radius:10px; }
 .legend-item b{ color:var(--paper); display:block; font-size:13px; margin-bottom:2px; }
 .legend-item .py{ color:var(--gold-soft); font-family:'JetBrains Mono',monospace; font-size:11.5px; }
 
-.topnav{
-  position:fixed; top:18px; left:18px;
-  font-size:13px; color:var(--paper-dim);
-  cursor:pointer; z-index:5;
-  display:flex; align-items:center; gap:6px;
-}
+.topnav{ position:fixed; top:18px; left:18px; font-size:13px; color:var(--paper-dim); cursor:pointer; z-index:5; display:flex; align-items:center; gap:6px; }
 .topnav:hover{ color:var(--gold-soft); }
 .hidden-init{ display:none; }
+
+/* stage-specific extras */
+.rack-row{ display:flex; gap:14px; margin-top:10px; }
+.rack-spool{ text-align:center; }
+.rack-spool .dot{ width:44px;height:44px;border-radius:50%; border:2px solid rgba(241,233,221,0.25); display:flex;align-items:center;justify-content:center; font-size:11px; color:var(--paper-dim); transition:all .3s ease; }
+.rack-spool.hit .dot{ border-color:var(--gold); box-shadow:0 0 0 5px rgba(212,162,76,0.15); color:var(--ink-deep); font-weight:700; }
+.rack-spool .idx{ font-size:11px; color:var(--paper-dim); margin-top:6px; }
+
+.swatch-row{ display:flex; gap:18px; margin-top:14px; }
+.swatch{ text-align:center; }
+.swatch .sq{ width:60px;height:60px;border-radius:10px; border:2px solid rgba(241,233,221,0.2); opacity:.25; transition:opacity .3s ease, transform .3s ease; }
+.swatch.active .sq{ opacity:1; transform:scale(1.05); }
+.swatch .lbl{ font-size:11px; color:var(--paper-dim); margin-top:6px; }
+
+.chevrons{ margin-top:10px; }
 </style>
 </head>
 <body>
@@ -290,7 +215,7 @@ h1,h2,h3,.display{ font-family:'Fraunces', serif; }
   <div class="topnav" onclick="goTo('title')">&larr; Title</div>
   <div class="map-head">
     <h2 style="margin-bottom:4px;">The Workshop Floor</h2>
-    <div class="sub" style="margin:0 auto;">Six frames, six lessons. Chapter 3 is fully playable in this prototype &mdash; the rest preview what they'll teach.</div>
+    <div class="sub" style="margin:0 auto;">Six frames, six lessons. Click any one to start.</div>
   </div>
 
   <div class="map-wrap">
@@ -305,35 +230,41 @@ h1,h2,h3,.display{ font-family:'Fraunces', serif; }
       </defs>
     </svg>
 
-    <button class="node done" style="left:8%; top:81%;" onclick="openPreview(1)">
+    <button class="node" style="left:8%; top:81%;" onclick="goTo('level1')">
       <div class="bobbin">🧵</div>
       <div class="lbl">1. Naming Threads</div>
       <div class="concept">variables</div>
+      <div class="done-tick">Complete ✓</div>
     </button>
-    <button class="node done" style="left:26%; top:44%;" onclick="openPreview(2)">
+    <button class="node" style="left:26%; top:44%;" onclick="goTo('level2')">
       <div class="bobbin">🎨</div>
       <div class="lbl">2. Choosing Dye</div>
       <div class="concept">if / else</div>
+      <div class="done-tick">Complete ✓</div>
     </button>
     <button class="node" style="left:40%; top:44%;" onclick="goTo('level3')">
       <div class="bobbin">🔁</div>
       <div class="lbl">3. Repeat the Weave</div>
       <div class="concept">for loops</div>
+      <div class="done-tick">Complete ✓</div>
     </button>
-    <button class="node" style="left:64%; top:50%;" onclick="openPreview(4)">
+    <button class="node" style="left:64%; top:50%;" onclick="goTo('level4')">
       <div class="bobbin">📦</div>
       <div class="lbl">4. The Spool Rack</div>
       <div class="concept">lists</div>
+      <div class="done-tick">Complete ✓</div>
     </button>
-    <button class="node" style="left:78%; top:20%;" onclick="openPreview(5)">
+    <button class="node" style="left:78%; top:20%;" onclick="goTo('level5')">
       <div class="bobbin">🧩</div>
       <div class="lbl">5. Pattern Blocks</div>
       <div class="concept">functions</div>
+      <div class="done-tick">Complete ✓</div>
     </button>
-    <button class="node" style="left:92%; top:28%;" onclick="openPreview(6)">
+    <button class="node" style="left:92%; top:28%;" onclick="goTo('level6')">
       <div class="bobbin">🪢</div>
       <div class="lbl">6. The Tangled Knot</div>
       <div class="concept">debugging</div>
+      <div class="done-tick">Complete ✓</div>
     </button>
   </div>
 
@@ -350,20 +281,84 @@ h1,h2,h3,.display{ font-family:'Fraunces', serif; }
   </div>
 </section>
 
-<!-- ================= PREVIEW MODAL (simple inline panel reused) ================= -->
-<section class="screen" id="preview">
+<!-- ================= LEVEL 1 · variables ================= -->
+<section class="screen" id="level1">
   <div class="topnav" onclick="goTo('map')">&larr; Map</div>
-  <div class="story-card" id="previewBody" style="margin-top:60px;"></div>
-  <div class="thread-rule"></div>
-  <div class="sub" style="max-width:480px;text-align:center;">This chapter isn't built out in the prototype yet &mdash; only Chapter 3 is fully playable so far. Happy to build the rest once we agree the format works.</div>
-  <button class="btn btn-ghost" style="margin-top:18px;" onclick="goTo('map')">Back to the Workshop</button>
+  <div class="level-wrap" style="margin-top:44px;">
+    <div class="panel">
+      <h3>Chapter 1 &middot; Naming Threads</h3>
+      <div class="story-text">
+        The Loomkeeper hands you a fresh spool. <span class="elder">"Before it touches the frame,
+        give it a name the pattern can call on. Not a note on paper &mdash; something the loom itself can read."</span>
+        <br><br>Pick the line that correctly labels this spool as the color <span class="mono">indigo</span>.
+      </div>
+      <div class="choices" id="choiceRow1">
+        <button class="choice-btn" onclick="l1select(this,'ok')">color = "indigo"</button>
+        <button class="choice-btn" onclick="l1select(this,'eq')">color == "indigo"</button>
+        <button class="choice-btn" onclick="l1select(this,'quoted')">"color" == indigo</button>
+      </div>
+      <div class="level-actions">
+        <button class="btn btn-primary" id="runBtn1" onclick="l1run()" disabled>Run the pattern</button>
+        <button class="btn btn-ghost hidden-init" id="nextBtn1" onclick="finishLevel(0,'level1')">Continue the story &rarr;</button>
+      </div>
+      <div class="feedback" id="fb1"></div>
+    </div>
+    <div class="panel loom-stage">
+      <h3 style="align-self:flex-start;">The Spool</h3>
+      <svg class="loom-svg" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="120" cy="90" r="46" fill="#3a3568" stroke="#e8c887" stroke-width="2"/>
+        <circle cx="120" cy="90" r="46" fill="none" stroke="#8fb8e8" stroke-width="1.5" stroke-dasharray="4 5" opacity="0.5"/>
+        <g id="tag1" opacity="0"></g>
+      </svg>
+      <div class="thread-count" id="stage1msg">This spool has no name yet.</div>
+    </div>
+  </div>
 </section>
 
-<!-- ================= LEVEL 3 (PLAYABLE) ================= -->
+<!-- ================= LEVEL 2 · if/else ================= -->
+<section class="screen" id="level2">
+  <div class="topnav" onclick="goTo('map')">&larr; Map</div>
+  <div class="level-wrap" style="margin-top:44px;">
+    <div class="panel">
+      <h3>Chapter 2 &middot; Choosing Dye</h3>
+      <div class="story-text">
+        Today's commission wants autumn colors. <span class="elder">"The pattern checks the season
+        before it dyes a single thread,"</span> the Loomkeeper says. <span class="mono">season</span> is
+        already set to <span class="mono">"autumn"</span>. Fill in the blank so the right dye gets picked.
+      </div>
+      <div class="code-block" style="margin-top:16px;">
+<span class="code-comment"># today's commission</span>
+season = <span class="code-str">"autumn"</span>
+<span class="code-kw">if</span> season == <span class="blank" id="blankSlot2">?</span>:
+    dye(<span class="code-str">"amber"</span>)
+<span class="code-kw">else</span>:
+    dye(<span class="code-str">"indigo"</span>)</div>
+      <div class="choices" id="choiceRow2">
+        <button class="choice-btn" onclick="l2select(this,'autumn')">"autumn"</button>
+        <button class="choice-btn" onclick="l2select(this,'winter')">"winter"</button>
+        <button class="choice-btn" onclick="l2select(this,'amber')">"amber"</button>
+      </div>
+      <div class="level-actions">
+        <button class="btn btn-primary" id="runBtn2" onclick="l2run()" disabled>Run the pattern</button>
+        <button class="btn btn-ghost hidden-init" id="nextBtn2" onclick="finishLevel(1,'level2')">Continue the story &rarr;</button>
+      </div>
+      <div class="feedback" id="fb2"></div>
+    </div>
+    <div class="panel loom-stage">
+      <h3 style="align-self:flex-start;">The Dye Bath</h3>
+      <div class="swatch-row">
+        <div class="swatch" id="swatchAmber"><div class="sq" style="background:#d4923a;"></div><div class="lbl">amber</div></div>
+        <div class="swatch" id="swatchIndigo"><div class="sq" style="background:#4a4a9c;"></div><div class="lbl">indigo</div></div>
+      </div>
+      <div class="thread-count" id="stage2msg">Waiting on the pattern's decision.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEVEL 3 · loops (existing, kept) ================= -->
 <section class="screen" id="level3">
   <div class="topnav" onclick="goTo('map')">&larr; Map</div>
   <div class="level-wrap" style="margin-top:44px;">
-
     <div class="panel">
       <h3>Chapter 3 &middot; Repeat the Weave</h3>
       <div class="story-text">
@@ -374,26 +369,21 @@ h1,h2,h3,.display{ font-family:'Fraunces', serif; }
         She hands you the frame. The pattern card has one line missing: how many times
         should the loom repeat the red pass? Fill in the blank and run it.
       </div>
-
       <div class="code-block" style="margin-top:16px;">
 <span class="code-comment"># weave the red border</span>
 <span class="code-kw">for</span> i <span class="code-kw">in</span> range(<span class="blank" id="blankSlot">?</span>):
     weave(<span class="code-str">"red"</span>)</div>
-
       <div class="choices" id="choiceRow">
         <button class="choice-btn" data-val="3" onclick="selectChoice(this,3)">3</button>
         <button class="choice-btn" data-val="5" onclick="selectChoice(this,5)">5</button>
         <button class="choice-btn" data-val="7" onclick="selectChoice(this,7)">7</button>
       </div>
-
       <div class="level-actions">
         <button class="btn btn-primary" id="runBtn" onclick="runWeave()" disabled>Run the pattern</button>
-        <button class="btn btn-ghost hidden-init" id="nextBtn" onclick="finishLevel3()">Continue the story &rarr;</button>
+        <button class="btn btn-ghost hidden-init" id="nextBtn" onclick="finishLevel(2,'level3')">Continue the story &rarr;</button>
       </div>
-
       <div class="feedback" id="fb3"></div>
     </div>
-
     <div class="panel loom-stage">
       <h3 style="align-self:flex-start;">The Frame</h3>
       <svg class="loom-svg" viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
@@ -403,7 +393,110 @@ h1,h2,h3,.display{ font-family:'Fraunces', serif; }
       </svg>
       <div class="thread-count" id="threadCount">0 of 5 red passes woven</div>
     </div>
+  </div>
+</section>
 
+<!-- ================= LEVEL 4 · lists ================= -->
+<section class="screen" id="level4">
+  <div class="topnav" onclick="goTo('map')">&larr; Map</div>
+  <div class="level-wrap" style="margin-top:44px;">
+    <div class="panel">
+      <h3>Chapter 4 &middot; The Spool Rack</h3>
+      <div class="story-text">
+        The rack holds three spools in order. <span class="elder">"The accent thread is always
+        the third spool,"</span> the Loomkeeper says, <span class="elder">"but the loom counts from
+        zero, not one. Don't forget that when you ask for it."</span>
+      </div>
+      <div class="code-block" style="margin-top:16px;">
+<span class="code-comment"># the rack, left to right</span>
+spools = [<span class="code-str">"red"</span>, <span class="code-str">"gold"</span>, <span class="code-str">"teal"</span>]
+accent = spools[<span class="blank" id="blankSlot4">?</span>]</div>
+      <div class="choices" id="choiceRow4">
+        <button class="choice-btn" onclick="l4select(this,0)">0</button>
+        <button class="choice-btn" onclick="l4select(this,1)">1</button>
+        <button class="choice-btn" onclick="l4select(this,2)">2</button>
+      </div>
+      <div class="level-actions">
+        <button class="btn btn-primary" id="runBtn4" onclick="l4run()" disabled>Run the pattern</button>
+        <button class="btn btn-ghost hidden-init" id="nextBtn4" onclick="finishLevel(3,'level4')">Continue the story &rarr;</button>
+      </div>
+      <div class="feedback" id="fb4"></div>
+    </div>
+    <div class="panel loom-stage">
+      <h3 style="align-self:flex-start;">The Rack</h3>
+      <div class="rack-row">
+        <div class="rack-spool" id="rack0"><div class="dot" style="background:#a44a42;"></div><div class="idx">spools[0]</div></div>
+        <div class="rack-spool" id="rack1"><div class="dot" style="background:#c9a13a;"></div><div class="idx">spools[1]</div></div>
+        <div class="rack-spool" id="rack2"><div class="dot" style="background:#3f8f86;"></div><div class="idx">spools[2]</div></div>
+      </div>
+      <div class="thread-count" id="stage4msg">accent is not chosen yet.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEVEL 5 · functions ================= -->
+<section class="screen" id="level5">
+  <div class="topnav" onclick="goTo('map')">&larr; Map</div>
+  <div class="level-wrap" style="margin-top:44px;">
+    <div class="panel">
+      <h3>Chapter 5 &middot; Pattern Blocks</h3>
+      <div class="story-text">
+        Three commissions this week all want the same herringbone edge. <span class="elder">"I'm
+        not explaining it three times,"</span> the Loomkeeper says, and shows you a block she
+        already wrote once. <span class="elder">"You just call on it, with how wide you need it."</span>
+        This one needs to be 4 rows wide.
+      </div>
+      <div class="code-block" style="margin-top:16px;">
+<span class="code-comment"># already written for you</span>
+<span class="code-kw">def</span> herringbone(width):
+    weave_pattern(<span class="code-str">"herringbone"</span>, width)
+
+<span class="code-comment"># now use it for a 4-row edge</span>
+<span class="blank" id="blankSlot5">?</span></div>
+      <div class="choices" id="choiceRow5">
+        <button class="choice-btn" onclick="l5select(this,'call')">herringbone(4)</button>
+        <button class="choice-btn" onclick="l5select(this,'def')">def herringbone(4)</button>
+        <button class="choice-btn" onclick="l5select(this,'assign')">herringbone = 4</button>
+      </div>
+      <div class="level-actions">
+        <button class="btn btn-primary" id="runBtn5" onclick="l5run()" disabled>Run the pattern</button>
+        <button class="btn btn-ghost hidden-init" id="nextBtn5" onclick="finishLevel(4,'level5')">Continue the story &rarr;</button>
+      </div>
+      <div class="feedback" id="fb5"></div>
+    </div>
+    <div class="panel loom-stage">
+      <h3 style="align-self:flex-start;">The Edge</h3>
+      <svg class="loom-svg chevrons" viewBox="0 0 240 120" xmlns="http://www.w3.org/2000/svg">
+        <g id="chevronGroup"></g>
+      </svg>
+      <div class="thread-count" id="stage5msg">No edge woven yet.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LEVEL 6 · debugging ================= -->
+<section class="screen" id="level6">
+  <div class="topnav" onclick="goTo('map')">&larr; Map</div>
+  <div class="level-wrap" style="margin-top:44px;">
+    <div class="panel">
+      <h3>Chapter 6 &middot; The Tangled Knot</h3>
+      <div class="story-text">
+        The loom jams halfway through a border. <span class="elder">"Something about how these
+        lines line up is wrong,"</span> the Loomkeeper says. <span class="elder">"Not what they say
+        &mdash; how they're spaced."</span> Click the line that's breaking the pattern.
+      </div>
+      <div class="code-block" style="margin-top:16px;" id="codeBlock6">
+<span class="code-line pickable" onclick="l6select(this,1)">for i in range(5):</span><span class="code-line pickable" onclick="l6select(this,2)">    weave("red")</span><span class="code-line pickable bad-indent" onclick="l6select(this,3)">     weave("gold")</span></div>
+      <div class="level-actions">
+        <button class="btn btn-primary" id="runBtn6" onclick="l6run()" disabled>Check this line</button>
+        <button class="btn btn-ghost hidden-init" id="nextBtn6" onclick="finishLevel(5,'level6')">Continue the story &rarr;</button>
+      </div>
+      <div class="feedback" id="fb6"></div>
+    </div>
+    <div class="panel loom-stage">
+      <h3 style="align-self:flex-start;">The Loom</h3>
+      <div class="thread-count" id="stage6msg" style="margin-top:10px;">The loom is jammed. Waiting on you.</div>
+    </div>
   </div>
 </section>
 
@@ -412,6 +505,14 @@ function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'instant'});
+}
+
+function markDone(idx){
+  document.querySelectorAll('#map .node')[idx].classList.add('done');
+}
+function finishLevel(idx, levelId){
+  markDone(idx);
+  goTo('map');
 }
 
 // hero decorative threads on title screen
@@ -432,20 +533,71 @@ function goTo(id){
   }
 })();
 
-const previews = {
-  1: {t:"Chapter 1 &middot; Naming Threads", d:"Before Wren touches the loom, she labels every spool: its color, its weight, whether it's silk or wool. In Python terms &mdash; this is a first, gentle introduction to variables and data types, told through the ordinary act of labeling supplies before a job."},
-  2: {t:"Chapter 2 &middot; Choosing Dye", d:"Autumn commissions want warm dyes, winter ones want cool. The pattern card has a branch in it: <span class=\"py mono\">if season == \"autumn\"</span> &mdash; and Wren has to decide which rule applies before she dyes a single thread. This chapter introduces conditionals through a decision she'd actually have to make."},
-  4: {t:"Chapter 4 &middot; The Spool Rack", d:"The rack holds a dozen spools in a specific order &mdash; and the order matters, because the pattern reads them left to right. This chapter introduces lists (and indexing) through something Wren already manages by hand: her own spool rack."},
-  5: {t:"Chapter 5 &middot; Pattern Blocks", d:"Three different commissions all need the same herringbone edge. Rather than re-explain it three times, the Loomkeeper writes it once as a named block Wren can call whenever she needs it. This is where functions enter &mdash; as a shortcut for something Wren was already repeating by hand."},
-  6: {t:"Chapter 6 &middot; The Tangled Knot", d:"The loom jams halfway through a commission. Something in the pattern is wrong, and the only way forward is to trace it line by line until the snag reveals itself. This closing chapter reframes debugging as a familiar craft skill: patient, methodical troubleshooting, not a mysterious extra step."}
-};
-function openPreview(n){
-  const p = previews[n];
-  document.getElementById('previewBody').innerHTML = `<h3 style="margin-top:0;color:var(--gold-soft);">${p.t}</h3><div style="line-height:1.75;">${p.d}</div>`;
-  goTo('preview');
+/* ---------------- LEVEL 1 · variables ---------------- */
+let l1choice = null;
+function l1select(btn,val){
+  document.querySelectorAll('#choiceRow1 .choice-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected'); l1choice = val;
+  document.getElementById('runBtn1').disabled = false;
+  document.getElementById('fb1').classList.remove('show','good','bad');
+}
+function l1run(){
+  const fb = document.getElementById('fb1');
+  const tag = document.getElementById('tag1');
+  const msg = document.getElementById('stage1msg');
+  fb.classList.add('show');
+  document.getElementById('nextBtn1').classList.remove('hidden-init');
+  if(l1choice==='ok'){
+    fb.classList.add('good'); fb.classList.remove('bad');
+    fb.innerHTML = `<b>Named.</b> A single <span class="mono">=</span> stores the value "indigo" into <span class="mono">color</span>. Now the pattern can call on it by name.`;
+    tag.innerHTML = `<rect x="86" y="72" width="68" height="36" rx="8" fill="#e8c887"/><text x="120" y="95" font-size="13" fill="#241d0d" text-anchor="middle" font-family="JetBrains Mono, monospace">color</text>`;
+    tag.setAttribute('opacity','1');
+    msg.textContent = 'Spool labeled: color = "indigo"';
+  } else if(l1choice==='eq'){
+    fb.classList.add('bad'); fb.classList.remove('good');
+    fb.innerHTML = `<b>Nothing got stored.</b> <span class="mono">==</span> only asks "are these equal?" &mdash; it doesn't name anything. Use a single <span class="mono">=</span> to assign a value.`;
+    msg.textContent = 'The spool is still unlabeled.';
+  } else {
+    fb.classList.add('bad'); fb.classList.remove('good');
+    fb.innerHTML = `<b>Backwards.</b> The quotes belong around <span class="mono">indigo</span>, the color itself &mdash; not around <span class="mono">color</span>, the label.`;
+    msg.textContent = 'The spool is still unlabeled.';
+  }
 }
 
-// ---- Level 3 logic ----
+/* ---------------- LEVEL 2 · if/else ---------------- */
+let l2choice = null;
+function l2select(btn,val){
+  document.querySelectorAll('#choiceRow2 .choice-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected'); l2choice = val;
+  document.getElementById('blankSlot2').textContent = `"${val}"`;
+  document.getElementById('runBtn2').disabled = false;
+  document.getElementById('fb2').classList.remove('show','good','bad');
+}
+function l2run(){
+  const fb = document.getElementById('fb2');
+  document.getElementById('swatchAmber').classList.remove('active');
+  document.getElementById('swatchIndigo').classList.remove('active');
+  fb.classList.add('show');
+  document.getElementById('nextBtn2').classList.remove('hidden-init');
+  const matches = (l2choice === 'autumn');
+  if(matches){
+    document.getElementById('swatchAmber').classList.add('active');
+    document.getElementById('stage2msg').textContent = 'amber dye applied — matches the commission.';
+    fb.classList.add('good'); fb.classList.remove('bad');
+    fb.innerHTML = `<b>Correct.</b> season is "autumn", so season == "autumn" is True — the amber branch runs.`;
+  } else {
+    document.getElementById('swatchIndigo').classList.add('active');
+    document.getElementById('stage2msg').textContent = 'indigo dye applied — not what the commission wanted.';
+    fb.classList.add('bad'); fb.classList.remove('good');
+    if(l2choice==='winter'){
+      fb.innerHTML = `<b>Wrong branch.</b> season is "autumn", not "winter" — so the comparison is False, and the pattern falls through to else, dyeing indigo instead.`;
+    } else {
+      fb.innerHTML = `<b>Wrong thing to compare.</b> You compared season to "amber" — a dye name, not a season. season is "autumn", so that's False too, and it falls through to else.`;
+    }
+  }
+}
+
+/* ---------------- LEVEL 3 · loops (unchanged) ---------------- */
 let chosen = null;
 function selectChoice(btn, val){
   document.querySelectorAll('#choiceRow .choice-btn').forEach(b=>b.classList.remove('selected'));
@@ -455,15 +607,12 @@ function selectChoice(btn, val){
   document.getElementById('runBtn').disabled = false;
   document.getElementById('fb3').classList.remove('show','good','bad');
 }
-
 function runWeave(){
   const loomG = document.getElementById('loomThreads');
   loomG.innerHTML = '';
   const fb = document.getElementById('fb3');
   const count = chosen;
   const target = 5;
-
-  // animate threads
   for(let i=0;i<count;i++){
     const y = 20 + i*30;
     const line = document.createElementNS('http://www.w3.org/2000/svg','line');
@@ -479,28 +628,112 @@ function runWeave(){
     }, 120*i);
   }
   document.getElementById('threadCount').textContent = `${count} of 5 red passes woven`;
-
   setTimeout(()=>{
     fb.classList.add('show');
     document.getElementById('nextBtn').classList.remove('hidden-init');
     if(count === target){
       fb.classList.add('good'); fb.classList.remove('bad');
-      fb.innerHTML = `<b>Exactly five.</b> The Loomkeeper nods. "range(5) &mdash; that's five passes, counting from zero to four. The loom doesn't need to be told five separate times. That's the whole point of a loop."`;
+      fb.innerHTML = `<b>Exactly five.</b> The Loomkeeper nods. "range(5) — that's five passes, counting from zero to four. The loom doesn't need to be told five separate times. That's the whole point of a loop."`;
     } else if(count < target){
       fb.classList.add('bad'); fb.classList.remove('good');
-      fb.innerHTML = `<b>Only ${count} passes.</b> The border looks thin. "Count again," she says. "range(${count}) repeats ${count} times &mdash; not enough for this pattern." Try a different number.`;
+      fb.innerHTML = `<b>Only ${count} passes.</b> The border looks thin. "Count again," she says. "range(${count}) repeats ${count} times — not enough for this pattern." Try a different number.`;
     } else {
       fb.classList.add('bad'); fb.classList.remove('good');
-      fb.innerHTML = `<b>${count} passes &mdash; too many.</b> Red thread spills past the border into the next color's space. "range(${count}) overshoots the pattern," she says. Try a smaller number.`;
+      fb.innerHTML = `<b>${count} passes — too many.</b> Red thread spills past the border into the next color's space. "range(${count}) overshoots the pattern," she says. Try a smaller number.`;
     }
   }, 120*count + 300);
 }
 
-function finishLevel3(){
-  goTo('map');
-  // mark chapter 3 as done visually
-  const node3 = document.querySelectorAll('#map .node')[2];
-  node3.classList.add('done');
+/* ---------------- LEVEL 4 · lists ---------------- */
+let l4choice = null;
+function l4select(btn,val){
+  document.querySelectorAll('#choiceRow4 .choice-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected'); l4choice = val;
+  document.getElementById('blankSlot4').textContent = val;
+  document.getElementById('runBtn4').disabled = false;
+  document.getElementById('fb4').classList.remove('show','good','bad');
+}
+function l4run(){
+  const fb = document.getElementById('fb4');
+  ['rack0','rack1','rack2'].forEach(id=>document.getElementById(id).classList.remove('hit'));
+  const idx = l4choice;
+  document.getElementById('rack'+idx).classList.add('hit');
+  fb.classList.add('show');
+  document.getElementById('nextBtn4').classList.remove('hidden-init');
+  const names = ['red','gold','teal'];
+  document.getElementById('stage4msg').textContent = `accent = spools[${idx}] → "${names[idx]}"`;
+  if(idx===2){
+    fb.classList.add('good'); fb.classList.remove('bad');
+    fb.innerHTML = `<b>Third spool, correctly.</b> Counting from zero, spools[2] is the third item — "teal". That's the accent she asked for.`;
+  } else {
+    fb.classList.add('bad'); fb.classList.remove('good');
+    fb.innerHTML = `<b>spools[${idx}] is "${names[idx]}", not the accent.</b> Since counting starts at 0, the third spool sits at index 2, not ${idx}.`;
+  }
+}
+
+/* ---------------- LEVEL 5 · functions ---------------- */
+let l5choice = null;
+function l5select(btn,val){
+  document.querySelectorAll('#choiceRow5 .choice-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected'); l5choice = val;
+  const labels = {call:'herringbone(4)', def:'def herringbone(4)', assign:'herringbone = 4'};
+  document.getElementById('blankSlot5').textContent = labels[val];
+  document.getElementById('runBtn5').disabled = false;
+  document.getElementById('fb5').classList.remove('show','good','bad');
+}
+function l5run(){
+  const fb = document.getElementById('fb5');
+  const g = document.getElementById('chevronGroup');
+  g.innerHTML = '';
+  fb.classList.add('show');
+  document.getElementById('nextBtn5').classList.remove('hidden-init');
+  if(l5choice==='call'){
+    for(let i=0;i<4;i++){
+      const x = 20 + i*50;
+      const p = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+      p.setAttribute('points', `${x},20 ${x+20},60 ${x+40},20`);
+      p.setAttribute('stroke', '#d4a24c'); p.setAttribute('stroke-width','5');
+      p.setAttribute('fill','none'); p.setAttribute('stroke-linecap','round');
+      p.setAttribute('opacity','0');
+      g.appendChild(p);
+      setTimeout(()=>{ p.style.transition='opacity .3s ease'; p.setAttribute('opacity','1'); }, i*150);
+    }
+    document.getElementById('stage5msg').textContent = '4-row herringbone edge woven.';
+    fb.classList.add('good'); fb.classList.remove('bad');
+    fb.innerHTML = `<b>Called it correctly.</b> herringbone(4) runs the block that's already defined, passing 4 in as width — no need to rewrite the pattern.`;
+  } else if(l5choice==='def'){
+    document.getElementById('stage5msg').textContent = 'Nothing woven — the block was redefined, not used.';
+    fb.classList.add('bad'); fb.classList.remove('good');
+    fb.innerHTML = `<b>That rewrites the block instead of using it.</b> def herringbone(4) tries to redefine the function (and isn't even valid — def needs a name, not a number). Drop the def and just call it.`;
+  } else {
+    document.getElementById('stage5msg').textContent = 'Nothing woven — the block was never called.';
+    fb.classList.add('bad'); fb.classList.remove('good');
+    fb.innerHTML = `<b>That overwrites the name entirely.</b> herringbone = 4 replaces your whole pattern block with the number 4. To use the block, call it: herringbone(4).`;
+  }
+}
+
+/* ---------------- LEVEL 6 · debugging ---------------- */
+let l6choice = null;
+function l6select(el, lineNum){
+  document.querySelectorAll('#codeBlock6 .code-line').forEach(l=>l.classList.remove('picked'));
+  el.classList.add('picked');
+  l6choice = lineNum;
+  document.getElementById('runBtn6').disabled = false;
+  document.getElementById('fb6').classList.remove('show','good','bad');
+}
+function l6run(){
+  const fb = document.getElementById('fb6');
+  fb.classList.add('show');
+  document.getElementById('nextBtn6').classList.remove('hidden-init');
+  if(l6choice===3){
+    fb.classList.add('good'); fb.classList.remove('bad');
+    fb.innerHTML = `<b>That's the snag.</b> Line 3 is indented one space further than line 2, even though they're both meant to be inside the same loop. Python reads that mismatch as a broken block — everything inside a loop needs to line up exactly.`;
+    document.getElementById('stage6msg').textContent = 'Line 3 re-indented to match line 2 — the loom runs freely again.';
+  } else {
+    fb.classList.add('bad'); fb.classList.remove('good');
+    fb.innerHTML = `<b>That line reads fine on its own.</b> Look at how far each line is indented, not what it says — one of these three doesn't line up with the others.`;
+    document.getElementById('stage6msg').textContent = 'Still jammed — look closer at the spacing.';
+  }
 }
 </script>
 </body>
